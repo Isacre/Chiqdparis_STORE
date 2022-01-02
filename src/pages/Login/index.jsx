@@ -16,9 +16,11 @@ import {
 import facelogo from "../../assets/photos/facebook.png";
 import googlelogo from "../../assets/photos/pesquisa.png";
 import { SaveUser } from "../../store/user/index";
+import { useNavigate } from "react-router";
 
 export default function LoginAndRegister() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   //login
   const [userLogin, setuserLogin] = useState("");
   const [userPassword, setuserPassword] = useState("");
@@ -33,15 +35,14 @@ export default function LoginAndRegister() {
   const [WrongCredentials, setWrongCredentials] = useState(false);
 
   function handleRegister() {
-    const newUser = {
-      username: FullName,
-      email: Email,
-      password: RegisterPassword,
-      cpf: CPF,
-    };
-    ChiqRegisterUser(newUser)
+    ChiqRegisterUser(FullName, Email, RegisterPassword, CPF)
       .then((user) => {
-        console.log(user);
+        ChiqLogin(Email, RegisterPassword);
+        setFullName("");
+        setEmail("");
+        setRegisterPassword("");
+        setCPF("");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
@@ -57,19 +58,20 @@ export default function LoginAndRegister() {
   }
 
   function handleLogin() {
-    ChiqLogin(userLogin, userPassword)
-      .then((usuario) => {
-        dispatch(SaveUser(usuario));
-      })
-      .catch((err) => {
-        console.log(err);
-        setuserLogin("");
-        setuserPassword("");
-        setWrongCredentials(true);
-        setTimeout(() => {
-          setWrongCredentials(false);
-        }, 3500);
-      });
+    if (userLogin && userPassword !== "")
+      ChiqLogin(userLogin, userPassword)
+        .then((usuario) => {
+          dispatch(SaveUser(usuario));
+        })
+        .catch((err) => {
+          setWrongCredentials(true);
+          setTimeout(() => {
+            setWrongCredentials(false);
+          }, 3500);
+        });
+    else {
+      console.log("aaa");
+    }
   }
 
   return (
@@ -89,7 +91,10 @@ export default function LoginAndRegister() {
                   : { border: "1px solid rgba(128, 128, 128, 0.5)" }
               }
               value={userLogin}
-              onChange={(event) => setuserLogin(event.target.value)}
+              onChange={(event) => {
+                setuserLogin(event.target.value);
+                setWrongCredentials(false);
+              }}
             />
             <input
               style={
@@ -103,8 +108,14 @@ export default function LoginAndRegister() {
                 WrongCredentials ? "Credenciais incorretas" : "Senha *"
               }
               value={userPassword}
-              onChange={(event) => setuserPassword(event.target.value)}
+              onChange={(event) => {
+                setuserPassword(event.target.value);
+                setWrongCredentials(false);
+              }}
             />
+
+            {WrongCredentials && <span>Usuário ou senha incorreta!</span>}
+
             <Remember>
               <p>ESQUECI MEU LOGIN</p>
               <p>ESQUECI MINHA SENHA</p>
