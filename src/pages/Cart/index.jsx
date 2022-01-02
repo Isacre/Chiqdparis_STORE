@@ -11,5 +11,5 @@ const Content = styled.div`
 `;
 
 export default function CartComponent() {
-  return <div></div>;
+  return <div>cart</div>;
 }

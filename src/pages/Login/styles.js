@@ -29,12 +29,14 @@ export const InputsDiv = styled.div`
   width: 80%;
   margin: auto;
   gap: 10px;
+
   input {
     border-radius: 5px;
     line-height: 40px;
     padding-left: 10px;
     outline: none;
     border: 1px solid rgba(128, 128, 128, 0.5);
+    transition: all ease-in-out 0.8s;
   }
 
   button {

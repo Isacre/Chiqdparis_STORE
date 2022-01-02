@@ -1,117 +1,35 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import {
+  HeaderBackground,
+  HeaderContent,
+  LeftContainer,
+  NavBar,
+  ImgContainer,
+  RightContainer,
+  WideMenu,
+  ShoppingCart,
+  HamburguerMenu,
+  Register,
+} from "./styles";
 import horizontallogo from "../../assets/photos/defaultlogo.svg";
 import { MdFavorite, MdShoppingCart, MdPerson, MdMenu } from "react-icons/md";
 import SideMenuComponent from "./SideMenu";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-const HeaderBackground = styled.div`
-  width: 100vw;
-  min-height: 12vh;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  background-color: #fff;
-  position: relative;
-  z-index: 1;
-`;
-
-const HeaderContent = styled.div`
-  margin: auto;
-  justify-content: space-between;
-  width: 70%;
-  min-height: 100%;
-  display: flex;
-  align-items: center;
-  img {
-    max-width: 120px;
-  }
-
-  @media (max-width: 900px) {
-    width: 90%;
-  }
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding-top: 0.5rem;
-`;
-
-const NavBar = styled.div`
-  display: flex;
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
-  gap: 20px;
-  transition: ease-in-out 200;
-
-  p {
-    cursor: pointer;
-    :hover {
-      color: #ff66c4;
-    }
-  }
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-`;
-
-const ImgContainer = styled.div``;
-
-const RightContainer = styled.div`
-  align-items: center;
-  vertical-align: bottom;
-`;
-
-const WideMenu = styled.div`
-  display: flex;
-  gap: 20px;
-  cursor: pointer;
-  align-items: baseline;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-`;
-
-const ShoppingCart = styled.div`
-  display: flex;
+const LoggedUserArea = styled.div`
   div {
-    position: relative;
-    right: 10px;
-    top: -10px;
-    background-color: #ff66c4;
-    border-radius: 25px;
-    color: #fff;
-    text-align: center;
-    width: 20px;
-    height: 20px;
-  }
-`;
-
-const HamburguerMenu = styled.div`
-  display: none;
-  transition: all ease-in-out 300ms;
-  transform: ${(props) => `rotate(${props.OpenMenu ? "90deg" : "-180deg"})`};
-  margin-right: 10%;
-  @media (max-width: 900px) {
     display: flex;
+    gap: 10px;
   }
-`;
 
-const Register = styled.div`
-  display: flex;
-  max-width: 300px;
-  gap: 10px;
+  b {
+    font-size: 1rem;
+  }
 
-  height: fit-content;
-  padding: 0px;
-  img {
-    max-width: 40px;
-    height: 40px;
-    border-radius: 20px;
+  span {
+    font-size: 0.8rem;
   }
 `;
 
@@ -150,15 +68,25 @@ export default function Header() {
                 src="https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
                 alt="userpicture"
               />
-              <p>
-                Faça <Link to={"/login"}>login</Link> ou <br />{" "}
-                <Link to={"/login"}>cadastra-se</Link>
-              </p>
+              {userdata.id === null ? (
+                <p>
+                  Faça <Link to={"/login"}>login</Link> ou <br />{" "}
+                  <Link to={"/login"}>cadastra-se</Link>
+                </p>
+              ) : (
+                <LoggedUserArea>
+                  <b>Bem vindo {userdata.username}</b>
+                  <div>
+                    <span>MINHA CONTA</span>
+                    <span>SAIR</span>
+                  </div>
+                </LoggedUserArea>
+              )}
             </Register>
-            <Link to={userdata.id === null ? "/login" : "/cart"}>
-              <MdFavorite size={25} />
+            <Link to={userdata.id === null ? "/login" : "/carrinho"}>
+              <MdFavorite size={25} color="black" />
             </Link>
-            <MdPerson size={25} />
+
             <ShoppingCart>
               <MdShoppingCart size={25} />
               {userdata.shoppingCart.length > 0 && (

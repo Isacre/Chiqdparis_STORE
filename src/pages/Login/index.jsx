@@ -29,10 +29,23 @@ export default function LoginAndRegister() {
   const [RegisterPassword, setRegisterPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [CPF, setCPF] = useState("");
-  const [CEP, setCEP] = useState("");
+  const [FullName, setFullName] = useState("");
+  const [WrongCredentials, setWrongCredentials] = useState(false);
 
   function handleRegister() {
-    ChiqRegisterUser();
+    const newUser = {
+      username: FullName,
+      email: Email,
+      password: RegisterPassword,
+      cpf: CPF,
+    };
+    ChiqRegisterUser(newUser)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleFacebookLogin() {
@@ -43,10 +56,20 @@ export default function LoginAndRegister() {
     console.log(userLogin);
   }
 
-  function handleLogin(email, password) {
-    ChiqLogin(email, password).then((usuario) => {
-      dispatch(SaveUser(usuario));
-    });
+  function handleLogin() {
+    ChiqLogin(userLogin, userPassword)
+      .then((usuario) => {
+        dispatch(SaveUser(usuario));
+      })
+      .catch((err) => {
+        console.log(err);
+        setuserLogin("");
+        setuserPassword("");
+        setWrongCredentials(true);
+        setTimeout(() => {
+          setWrongCredentials(false);
+        }, 3500);
+      });
   }
 
   return (
@@ -56,13 +79,29 @@ export default function LoginAndRegister() {
           <h1>JÁ TENHO MEU CADASTRO</h1>
           <InputsDiv>
             <input
-              placeholder="Email *"
+              className="logininput"
+              placeholder={
+                WrongCredentials ? "Credenciais incorretas" : "Email *"
+              }
+              style={
+                WrongCredentials
+                  ? { border: "1px solid red" }
+                  : { border: "1px solid rgba(128, 128, 128, 0.5)" }
+              }
               value={userLogin}
               onChange={(event) => setuserLogin(event.target.value)}
             />
             <input
+              style={
+                WrongCredentials
+                  ? { border: "1px solid red" }
+                  : { border: "1px solid rgba(128, 128, 128, 0.5)" }
+              }
+              className="logininput"
               type="password"
-              placeholder="Senha *"
+              placeholder={
+                WrongCredentials ? "Credenciais incorretas" : "Senha *"
+              }
               value={userPassword}
               onChange={(event) => setuserPassword(event.target.value)}
             />
@@ -91,6 +130,11 @@ export default function LoginAndRegister() {
           <h1>QUERO ME CADASTRAR</h1>
           <InputsDiv>
             <input
+              placeholder="Nome Completo *"
+              value={FullName}
+              onChange={(event) => setFullName(event.target.value)}
+            />
+            <input
               placeholder="Email *"
               value={Email}
               onChange={(event) => setEmail(event.target.value)}
@@ -112,11 +156,7 @@ export default function LoginAndRegister() {
               value={CPF}
               onChange={(event) => setCPF(event.target.value)}
             />
-            <input
-              placeholder="CEP *"
-              value={CEP}
-              onChange={(event) => setCEP(event.target.value)}
-            />
+
             <button onClick={handleRegister}>Cadastrar</button>
           </InputsDiv>
         </Register>
