@@ -17,13 +17,18 @@ import facelogo from "../../assets/photos/facebook.png";
 import googlelogo from "../../assets/photos/pesquisa.png";
 import { SaveUser } from "../../store/user/index";
 import { useNavigate } from "react-router";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export default function LoginAndRegister() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const antIcon = <LoadingOutlined style={{ fontSize: 20 }} />;
   //login
   const [userLogin, setuserLogin] = useState("");
   const [userPassword, setuserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [registerloading, setRegisterloading] = useState(false);
 
   //register
 
@@ -31,21 +36,25 @@ export default function LoginAndRegister() {
   const [RegisterPassword, setRegisterPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [CPF, setCPF] = useState("");
-  const [FullName, setFullName] = useState("");
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
   const [WrongCredentials, setWrongCredentials] = useState(false);
 
   function handleRegister() {
-    ChiqRegisterUser(FullName, Email, RegisterPassword, CPF)
+    setRegisterloading(true);
+    ChiqRegisterUser(FirstName, LastName, Email, RegisterPassword, CPF)
       .then((user) => {
         ChiqLogin(Email, RegisterPassword);
-        setFullName("");
+        setFirstName("");
         setEmail("");
         setRegisterPassword("");
         setCPF("");
+        setRegisterloading(false);
         navigate("/");
       })
       .catch((err) => {
         console.log(err);
+        setRegisterloading(false);
       });
   }
 
@@ -58,16 +67,17 @@ export default function LoginAndRegister() {
   }
 
   function handleLogin() {
+    setLoading(true);
     if (userLogin && userPassword !== "")
       ChiqLogin(userLogin, userPassword)
         .then((usuario) => {
           dispatch(SaveUser(usuario));
+          setLoading(false);
+          navigate("/");
         })
         .catch((err) => {
           setWrongCredentials(true);
-          setTimeout(() => {
-            setWrongCredentials(false);
-          }, 3500);
+          setLoading(false);
         });
     else {
       console.log("aaa");
@@ -117,10 +127,13 @@ export default function LoginAndRegister() {
             {WrongCredentials && <span>Usuário ou senha incorreta!</span>}
 
             <Remember>
-              <p>ESQUECI MEU LOGIN</p>
-              <p>ESQUECI MINHA SENHA</p>
+              <p>
+                ESQUECEU SEU <a href="/">LOGIN</a> OU <a href="/">SENHA</a>?
+              </p>
             </Remember>
-            <LoginButton onClick={handleLogin}>Entrar</LoginButton>
+            <LoginButton onClick={handleLogin}>
+              {loading ? <Spin indicator={antIcon} /> : "ENTRAR"}
+            </LoginButton>
           </InputsDiv>
           <SocialLogin>
             <h3>QUERO ACESSAR COM MINHAS REDES SOCIAIS</h3>
@@ -140,11 +153,19 @@ export default function LoginAndRegister() {
         <Register>
           <h1>QUERO ME CADASTRAR</h1>
           <InputsDiv>
-            <input
-              placeholder="Nome Completo *"
-              value={FullName}
-              onChange={(event) => setFullName(event.target.value)}
-            />
+            <div className="nameAndSurName">
+              <input
+                placeholder="Nome *"
+                value={FirstName}
+                onChange={(event) => setFirstName(event.target.value)}
+              />
+              <input
+                placeholder="Sobre Nome *"
+                value={LastName}
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </div>
+
             <input
               placeholder="Email *"
               value={Email}
@@ -168,7 +189,9 @@ export default function LoginAndRegister() {
               onChange={(event) => setCPF(event.target.value)}
             />
 
-            <button onClick={handleRegister}>Cadastrar</button>
+            <button onClick={handleRegister}>
+              {registerloading ? <Spin indicator={antIcon} /> : "CADASTRAR"}
+            </button>
           </InputsDiv>
         </Register>
       </Content>

@@ -12,11 +12,13 @@ import {
   Register,
 } from "./styles";
 import horizontallogo from "../../assets/photos/defaultlogo.svg";
-import { MdFavorite, MdShoppingCart, MdPerson, MdMenu } from "react-icons/md";
+import { MdFavorite, MdShoppingCart, MdMenu } from "react-icons/md";
 import SideMenuComponent from "./SideMenu";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Loggout } from "../../store/user";
+import { useDispatch } from "react-redux";
 
 const LoggedUserArea = styled.div`
   div {
@@ -34,9 +36,14 @@ const LoggedUserArea = styled.div`
 `;
 
 export default function Header() {
+  const dispatch = useDispatch();
   const [OpenHamburguerMenu, setOpenMenu] = useState(false);
   const userdata = useSelector((state) => state.user.user);
   console.log(userdata);
+
+  function handleLogout() {
+    dispatch(Loggout());
+  }
 
   return (
     <HeaderBackground>
@@ -75,24 +82,28 @@ export default function Header() {
                 </p>
               ) : (
                 <LoggedUserArea>
-                  <b>Bem vindo {userdata.username}</b>
+                  <b>Bem vindo, {userdata.username}</b>
                   <div>
-                    <span>MINHA CONTA</span>
-                    <span>SAIR</span>
+                    <Link to={"/conta"}>
+                      {" "}
+                      <span>MINHA CONTA</span>{" "}
+                    </Link>
+                    <span onClick={handleLogout}>SAIR</span>
                   </div>
                 </LoggedUserArea>
               )}
             </Register>
-            <Link to={userdata.id === null ? "/login" : "/carrinho"}>
+            <Link to={userdata.id === null ? "/login" : "/favoritos"}>
               <MdFavorite size={25} color="black" />
             </Link>
-
-            <ShoppingCart>
-              <MdShoppingCart size={25} />
-              {userdata.shoppingCart.length > 0 && (
-                <div>{userdata.shoppingCart.length}</div>
-              )}
-            </ShoppingCart>
+            <Link to="/carrinho">
+              <ShoppingCart>
+                <MdShoppingCart size={25} color="black" />
+                {userdata.shoppingCart.length > 0 && (
+                  <div>{userdata.shoppingCart.length}</div>
+                )}
+              </ShoppingCart>
+            </Link>
           </WideMenu>
 
           <SideMenuComponent

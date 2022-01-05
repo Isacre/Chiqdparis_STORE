@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Rate } from "antd";
 import { MdShoppingCart } from "react-icons/md";
+import { AddtoCart } from "../../../store/user";
+import { useDispatch } from "react-redux";
 import "antd/dist/antd.min.css";
 
 const Container = styled.div`
@@ -98,6 +100,8 @@ const CustomP = styled.p`
 `;
 
 export default function ProdutoComponent({ index, produto }) {
+  const dispatch = useDispatch();
+
   function FilterTitles(data) {
     const filtereddata = data.slice(0, 30);
     const newtitle = filtereddata + "...";
@@ -114,7 +118,7 @@ export default function ProdutoComponent({ index, produto }) {
         <ProductName>{FilterTitles(produto.title)}</ProductName>
         <ProductRatings>
           <Rate disabled defaultValue={produto.rating.rate} allowHalf />
-          <span>({produto.rating.count})</span>
+          {/* <span>({produto.rating.count})</span> */}
         </ProductRatings>
 
         <ProductPrice>R${produto.price}</ProductPrice>

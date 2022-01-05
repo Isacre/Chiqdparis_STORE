@@ -8,7 +8,7 @@ const SideMenu = styled.div`
   right: 0;
   top: 0;
   background-color: #fff;
-  height: 100%;
+  height: 100vh;
   transition: all ease-in-out 500ms;
   display: inline;
   width: ${(props) => (props.OpenMenu ? "100%" : "0px")};

@@ -10,12 +10,24 @@ export async function ChiqLogin(email, password) {
   return products.data;
 }
 
-export async function ChiqRegisterUser(username, email, password, cpf) {
+export async function ChiqRegisterUser(
+  firstname,
+  lastname,
+  email,
+  password,
+  cpf
+) {
   const products = await axios.post(`${url}/register`, {
-    username: username,
+    firstname: firstname,
+    lastname: lastname,
     email: email,
     password: password,
     cpf: cpf,
   });
+  return products.data;
+}
+
+export async function GetStoreProducts() {
+  const products = await axios.get(`${url}/products`);
   return products.data;
 }

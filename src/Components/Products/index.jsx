@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { GetProducts } from "../../services/dummyApi";
+import { GetStoreProducts } from "../../services/chiqdparisAPI";
 import { Spin } from "antd";
 import ProdutoComponent from "./Produto";
 
@@ -41,7 +41,7 @@ export default function Products() {
   const [Products, setProducts] = useState([]);
 
   function handleFetchItems() {
-    GetProducts().then((res) => {
+    GetStoreProducts().then((res) => {
       setProducts(res);
     });
   }

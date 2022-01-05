@@ -21,11 +21,6 @@ export const Register = styled.div`
   height: fit-content;
   text-align: center;
   border-left: 2px solid grey;
-
-  span {
-    color: red;
-    background-color: red;
-  }
 `;
 
 export const InputsDiv = styled.div`
@@ -54,6 +49,16 @@ export const InputsDiv = styled.div`
 
     :hover {
       filter: brightness(110%);
+    }
+  }
+
+  .nameAndSurName {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      width: 49%;
     }
   }
 `;
