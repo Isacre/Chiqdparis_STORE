@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Favourites {
-  productId: String;
-}
 interface ProductsType {
   Products: [
     {

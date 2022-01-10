@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import horizontallogo from "../../assets/photos/defaultlogo.svg";
-import {
-  MdFavorite,
-  MdShoppingCart,
-  MdMenu,
-  MdAdminPanelSettings,
-} from "react-icons/md";
+import { MdFavorite, MdShoppingCart, MdMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import {
@@ -51,7 +46,7 @@ export default function Header() {
   useEffect(() => {
     dispatch(SaveUser(local));
     localStorage.setItem("user", JSON.stringify(userdata));
-  }, []);
+  }, [dispatch, local, userdata]);
   function handleLogout() {
     dispatch(Logout());
   }

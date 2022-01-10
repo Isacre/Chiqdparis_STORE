@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { fetchSingleProduct, setFavorites } from "../../services/chiqAPI";
+import { useEffect, useState } from "react";
+import { fetchSingleProduct } from "../../services/chiqAPI";
 import styled from "styled-components";
 import { useParams } from "react-router";
 import { Rate, Spin } from "antd";
-import {
-  MdFavorite,
-  MdFavoriteBorder,
-  MdShoppingCart,
-  MdDescription,
-} from "react-icons/md";
+import { MdFavorite, MdFavoriteBorder, MdDescription } from "react-icons/md";
 import "antd/dist/antd.min.css";
 import { useAppSelector } from "../../store/hooks";
-import { useDispatch } from "react-redux";
-import { AddFavorite } from "../../store/user";
 
 const Component = styled.div`
   background-color: #f2f3f4;
@@ -115,7 +108,6 @@ const ProductPrice = styled.div`
   }
 `;
 
-const StockInfo = styled.b``;
 const Buttons = styled.div`
   display: grid;
   grid-template-columns: 4fr 1fr;
@@ -168,26 +160,19 @@ export default function ProductPage() {
   const calcdiscount = (Product.price * 15) / 100;
   const finalPrice = (Product.price - calcdiscount).toFixed(2);
   const data = useAppSelector((state) => state.user.Userinfo);
-  const acessToken = localStorage.getItem("acessToken");
-  const dispatch = useDispatch();
-
-  function handleFavorite() {
-    const newFavorites = [...data.favourites, Product._id];
-  }
-
-  function getProduct() {
-    fetchSingleProduct(id!)
-      .then((product) => {
-        setProduct(product);
-      })
-      .catch((err) => {
-        window.alert(err);
-      });
-  }
 
   useEffect(() => {
+    function getProduct() {
+      fetchSingleProduct(id!)
+        .then((product) => {
+          setProduct(product);
+        })
+        .catch((err) => {
+          window.alert(err);
+        });
+    }
     getProduct();
-  }, []);
+  }, [id]);
 
   return (
     <Component>
@@ -206,7 +191,7 @@ export default function ProductPage() {
           <MainContainer>
             <LeftContainer>
               <ImageContainer>
-                <img src={Product.image} />
+                <img src={Product.image} alt={Product.title} />
               </ImageContainer>
             </LeftContainer>
             <RightContainer>
@@ -246,7 +231,7 @@ export default function ProductPage() {
                   <BuyButton disabled={Product.quantity === 0 ? true : false}>
                     Comprar
                   </BuyButton>{" "}
-                  <FavoriteButton onClick={handleFavorite}>
+                  <FavoriteButton>
                     {data.favourites.indexOf(Product._id) ? (
                       <MdFavoriteBorder size={20} />
                     ) : (

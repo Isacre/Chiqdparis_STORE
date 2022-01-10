@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MdInventory } from "react-icons/md";
-import { useAppSelector } from "../../store/hooks";
+/* import { useAppSelector } from "../../store/hooks"; */
 const Component = styled.div`
   background-color: #f2f3f4;
   width: 100%;
@@ -29,7 +29,7 @@ const Header = styled.div`
 const Orders = styled.div``;
 
 export default function Profile() {
-  const data = useAppSelector((state) => state.user.Userinfo);
+  /*  const data = useAppSelector((state) => state.user.Userinfo); */
   return (
     <Component>
       <Content>

@@ -1,9 +1,6 @@
-import React from "react";
 import styled from "styled-components";
-import { MdShoppingBag } from "react-icons/md";
-
-import CartItem from "./CartItem";
-import { useAppSelector } from "../../store/hooks";
+/* 
+import { useAppSelector } from "../../store/hooks"; */
 
 const Component = styled.div`
   display: flex;
@@ -12,7 +9,7 @@ const Component = styled.div`
   height: 100vh;
 `;
 
-const EmptyCart = styled.div`
+/* const EmptyCart = styled.div`
   position: relative;
   text-align: center;
   top: 15%;
@@ -33,9 +30,9 @@ const EmptyCart = styled.div`
     }
   }
 `;
-
+ */
 export default function CartComponent() {
-  const data = useAppSelector((state) => state.user.Userinfo);
+  /*   const data = useAppSelector((state) => state.user.Userinfo); */
 
   return (
     <Component>
