@@ -5,6 +5,7 @@ import { MdShoppingCart } from "react-icons/md";
 import "antd/dist/antd.min.css";
 
 import { Link } from "react-router-dom";
+import products from "../../../store/products";
 
 const Container = styled.div`
   margin: auto;
@@ -104,8 +105,8 @@ export interface ProductsType {
   price: String;
   image: String;
   rating: {
-    rate: Number;
-    count: Number;
+    rate: number;
+    count: number;
   };
   description: String;
   categories: Array<String>;
@@ -134,7 +135,7 @@ export default function ProdutoComponent(props: any) {
           <ProductName>{FilterTitles(Products.title)}</ProductName>
           <ProductRatings>
             <Rate disabled defaultValue={Products.rating.rate} allowHalf />
-            {/* <span>({produto.rating.count})</span> */}
+            <span>({Products.rating.count})</span>
           </ProductRatings>
 
           <ProductPrice>R${Products.price}</ProductPrice>
