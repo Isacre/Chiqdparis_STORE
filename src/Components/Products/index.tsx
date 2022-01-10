@@ -44,15 +44,14 @@ export default function Products() {
   const Products = useAppSelector((state) => state.store.Products);
   const dispatch = useDispatch();
 
-  function handleFetchItems() {
-    fetchProducts().then((res: any) => {
-      dispatch(getProducts(res));
-    });
-  }
-
   useEffect(() => {
+    function handleFetchItems() {
+      fetchProducts().then((res: any) => {
+        dispatch(getProducts(res));
+      });
+    }
     handleFetchItems();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Background>

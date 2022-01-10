@@ -1,7 +1,4 @@
-import React from "react";
 import styled from "styled-components";
-import { MdShoppingBag } from "react-icons/md";
-import { useSelector } from "react-redux";
 import Favourite from "./Favourite";
 import { useAppSelector } from "../../store/hooks";
 import { Link } from "react-router-dom";

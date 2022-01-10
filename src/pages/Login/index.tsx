@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ChiqLogin, ChiqRegisterUser } from "../../services/chiqAPI";
 import {
@@ -19,7 +19,6 @@ import { SaveUser } from "../../store/user/index";
 import { useNavigate } from "react-router";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import jwtDecode from "jwt-decode";
 
 export default function LoginAndRegister() {
   const dispatch = useDispatch();
