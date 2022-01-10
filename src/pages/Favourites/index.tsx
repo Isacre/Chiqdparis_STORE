@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { MdShoppingBag } from "react-icons/md";
 import { useSelector } from "react-redux";
-import CartItem from "./CartItem";
+import Favourite from "./Favourite";
+import { useAppSelector } from "../../store/hooks";
+import { Link } from "react-router-dom";
 
 const Component = styled.div`
   display: flex;
@@ -33,24 +35,23 @@ const EmptyCart = styled.div`
   }
 `;
 
-export default function CartComponent() {
-  const data = useSelector((state) => state.user.user);
-  console.log(data.shoppingCart);
+export default function FavouriteComponent() {
+  const data = useAppSelector((state) => state.user.Userinfo.favourites);
+  console.log(data);
   return (
     <Component>
-      {data.shoppingCart.length === 0 ? (
+      {data.length === 0 ? (
         <EmptyCart>
-          <b>O seu carrinho está vazio,</b>{" "}
-          <p>deseja olhar outros items similares?</p>
-          <button>
-            <MdShoppingBag size={25} />
-            CONTINUAR COMPRANDO
-          </button>
+          <b>Você ainda não tem nenhum item favorito,</b>{" "}
+          <p>verifique nossas ofertas </p>
+          <Link to="/">
+            <button>VOLTAR PARA A HOME</button>
+          </Link>
         </EmptyCart>
       ) : (
         <>
-          {data.shoppingCart.map((Item) => (
-            <CartItem Item={Item} />
+          {data.map((favorito) => (
+            <Favourite favouriteItem={favorito} />
           ))}
         </>
       )}

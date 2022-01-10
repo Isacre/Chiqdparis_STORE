@@ -1,10 +1,10 @@
-import React from "react";
 import styled from "styled-components";
 import { Rate } from "antd";
 import { MdShoppingCart } from "react-icons/md";
-import { AddtoCart } from "../../../store/user";
-import { useDispatch } from "react-redux";
+
 import "antd/dist/antd.min.css";
+
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   margin: auto;
@@ -27,7 +27,7 @@ const Container = styled.div`
     height: 58vh;
   }
 
-  @media (max-width: 374px) {
+  @media (max-width: 390px) {
     width: 65vw;
   }
 `;
@@ -58,7 +58,7 @@ const ProductName = styled.div`
   height: 10%;
   margin-bottom: 10px;
 `;
-const BuyButton = styled.div`
+export const BuyButton = styled.div`
   text-align: center;
   min-height: 10%;
   width: 80%;
@@ -99,10 +99,25 @@ const CustomP = styled.p`
   color: rgba(0, 0, 0, 0.7);
 `;
 
-export default function ProdutoComponent({ index, produto }) {
-  const dispatch = useDispatch();
+export interface ProductsType {
+  title: String;
+  price: String;
+  image: String;
+  rating: {
+    rate: Number;
+    count: Number;
+  };
+  description: String;
+  categories: Array<String>;
+  quantity: Number;
+  _id: String;
+}
 
-  function FilterTitles(data) {
+export default function ProdutoComponent(props: any) {
+  const Products: ProductsType = props.Products;
+  const ProductNames = Products.title;
+  const urlName = ProductNames.toLowerCase().replace(/\s+/g, "-");
+  function FilterTitles(data: String) {
     const filtereddata = data.slice(0, 30);
     const newtitle = filtereddata + "...";
     if (data.length > 30) return newtitle;
@@ -111,31 +126,33 @@ export default function ProdutoComponent({ index, produto }) {
 
   return (
     <>
-      <Container>
-        <ImageContainer>
-          <ProductImage src={produto.image} />
-        </ImageContainer>
-        <ProductName>{FilterTitles(produto.title)}</ProductName>
-        <ProductRatings>
-          <Rate disabled defaultValue={produto.rating.rate} allowHalf />
-          {/* <span>({produto.rating.count})</span> */}
-        </ProductRatings>
+      <Link to={`produto/${Products._id}/${urlName}`}>
+        <Container>
+          <ImageContainer>
+            <ProductImage src={`${Products.image}`} />
+          </ImageContainer>
+          <ProductName>{FilterTitles(Products.title)}</ProductName>
+          <ProductRatings>
+            <Rate disabled defaultValue={Products.rating.rate} allowHalf />
+            {/* <span>({produto.rating.count})</span> */}
+          </ProductRatings>
 
-        <ProductPrice>R${produto.price}</ProductPrice>
-        <CustomP>À vista no PIX </CustomP>
-        <BuyButton>
-          <button>
-            <MdShoppingCart
-              size={20}
-              style={{
-                textAlign: "center",
-                verticalAlign: "sub",
-              }}
-            />
-            Comprar
-          </button>
-        </BuyButton>
-      </Container>
+          <ProductPrice>R${Products.price}</ProductPrice>
+          <CustomP>À vista no PIX </CustomP>
+          <BuyButton>
+            <button>
+              <MdShoppingCart
+                size={20}
+                style={{
+                  textAlign: "center",
+                  verticalAlign: "sub",
+                }}
+              />
+              Comprar
+            </button>
+          </BuyButton>
+        </Container>
+      </Link>
     </>
   );
 }

@@ -1,4 +1,14 @@
-import React, { useState } from "react";
+import styled from "styled-components";
+import { useState } from "react";
+import horizontallogo from "../../assets/photos/defaultlogo.svg";
+import {
+  MdFavorite,
+  MdShoppingCart,
+  MdMenu,
+  MdAdminPanelSettings,
+} from "react-icons/md";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../store/hooks";
 import {
   HeaderBackground,
   HeaderContent,
@@ -11,14 +21,9 @@ import {
   HamburguerMenu,
   Register,
 } from "./styles";
-import horizontallogo from "../../assets/photos/defaultlogo.svg";
-import { MdFavorite, MdShoppingCart, MdMenu } from "react-icons/md";
-import SideMenuComponent from "./SideMenu";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { Loggout } from "../../store/user";
 import { useDispatch } from "react-redux";
+import { Logout, SaveUser } from "../../store/user";
+import { useEffect } from "react";
 
 const LoggedUserArea = styled.div`
   div {
@@ -37,12 +42,18 @@ const LoggedUserArea = styled.div`
 
 export default function Header() {
   const dispatch = useDispatch();
-  const [OpenHamburguerMenu, setOpenMenu] = useState(false);
-  const userdata = useSelector((state) => state.user.user);
+  const [SideMenuOpen, setSideMenuOpen] = useState(false);
+  const userdata = useAppSelector((state) => state.user.Userinfo);
+  const localData = localStorage.getItem("user");
+  const local = JSON.parse(localData!);
   console.log(userdata);
 
+  useEffect(() => {
+    dispatch(SaveUser(local));
+    localStorage.setItem("user", JSON.stringify(userdata));
+  }, []);
   function handleLogout() {
-    dispatch(Loggout());
+    dispatch(Logout());
   }
 
   return (
@@ -62,11 +73,8 @@ export default function Header() {
           </NavBar>
         </LeftContainer>
         <RightContainer>
-          <HamburguerMenu OpenMenu={OpenHamburguerMenu}>
-            <MdMenu
-              size={25}
-              onClick={() => setOpenMenu(!OpenHamburguerMenu)}
-            />
+          <HamburguerMenu>
+            <MdMenu size={25} onClick={() => setSideMenuOpen(!SideMenuOpen)} />
           </HamburguerMenu>
 
           <WideMenu>
@@ -75,14 +83,14 @@ export default function Header() {
                 src="https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png"
                 alt="userpicture"
               />
-              {userdata.id === null ? (
+              {userdata._id === undefined ? (
                 <p>
                   Faça <Link to={"/login"}>login</Link> ou <br />{" "}
                   <Link to={"/login"}>cadastra-se</Link>
                 </p>
               ) : (
                 <LoggedUserArea>
-                  <b>Bem vindo, {userdata.username}</b>
+                  <b>Bem vindo, {userdata?.firstname}</b>
                   <div>
                     <Link to={"/conta"}>
                       {" "}
@@ -93,23 +101,15 @@ export default function Header() {
                 </LoggedUserArea>
               )}
             </Register>
-            <Link to={userdata.id === null ? "/login" : "/favoritos"}>
+            <Link to={userdata._id === undefined ? "/login" : "/favoritos"}>
               <MdFavorite size={25} color="black" />
             </Link>
             <Link to="/carrinho">
               <ShoppingCart>
                 <MdShoppingCart size={25} color="black" />
-                {userdata.shoppingCart.length > 0 && (
-                  <div>{userdata.shoppingCart.length}</div>
-                )}
               </ShoppingCart>
             </Link>
           </WideMenu>
-
-          <SideMenuComponent
-            OpenMenu={OpenHamburguerMenu}
-            setOpenMenu={setOpenMenu}
-          />
         </RightContainer>
       </HeaderContent>
     </HeaderBackground>

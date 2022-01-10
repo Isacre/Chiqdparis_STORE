@@ -1,13 +1,14 @@
 import "./App.css";
 import Header from "./Components/Header";
-import Products from "./Components/Products";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Cart from "./pages/Cart";
-import FavouriteItems from "./pages/Favourites";
-import Account from "./pages/Account";
+import Products from "./Components/Products";
+import Login from "./pages/Login/";
+import ProductPage from "./pages/ProductPage";
+import Profile from "./pages/Profile";
+import Favourites from "./pages/Favourites";
+import CartComponent from "./pages/Cart";
 
 function App() {
   return (
@@ -18,9 +19,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Products />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/carrinho" element={<Cart />} />
-            <Route path="/favoritos" element={<FavouriteItems />} />
-            <Route path="/conta" element={<Account />} />
+            <Route path="/conta" element={<Profile />} />
+            <Route path="/favoritos" element={<Favourites />} />
+            <Route path="/carrinho" element={<CartComponent />} />
+            <Route path="/produto/:id/:title" element={<ProductPage />} />
           </Routes>
         </Provider>
       </Router>

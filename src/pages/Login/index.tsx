@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ChiqLogin, ChiqRegisterUser } from "../../services/chiqdparisAPI";
+import { ChiqLogin, ChiqRegisterUser } from "../../services/chiqAPI";
 import {
   Component,
   Content,
@@ -19,6 +19,7 @@ import { SaveUser } from "../../store/user/index";
 import { useNavigate } from "react-router";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import jwtDecode from "jwt-decode";
 
 export default function LoginAndRegister() {
   const dispatch = useDispatch();
@@ -44,7 +45,8 @@ export default function LoginAndRegister() {
     setRegisterloading(true);
     ChiqRegisterUser(FirstName, LastName, Email, RegisterPassword, CPF)
       .then((user) => {
-        ChiqLogin(Email, RegisterPassword);
+        ChiqLogin(user.email, RegisterPassword);
+        dispatch(SaveUser(user));
         setFirstName("");
         setEmail("");
         setRegisterPassword("");
@@ -68,20 +70,20 @@ export default function LoginAndRegister() {
 
   function handleLogin() {
     setLoading(true);
-    if (userLogin && userPassword !== "")
-      ChiqLogin(userLogin, userPassword)
-        .then((usuario) => {
-          dispatch(SaveUser(usuario));
-          setLoading(false);
-          navigate("/");
-        })
-        .catch((err) => {
-          setWrongCredentials(true);
-          setLoading(false);
-        });
-    else {
-      console.log("aaa");
-    }
+    ChiqLogin(userLogin, userPassword)
+      .then((usuario) => {
+        const acessToken = usuario.acessToken;
+        localStorage.setItem("accesstoken", acessToken);
+        localStorage.setItem("user", JSON.stringify(usuario));
+        dispatch(SaveUser(usuario));
+        setLoading(false);
+        navigate("/");
+      })
+      .catch((err) => {
+        setWrongCredentials(true);
+        setLoading(false);
+        console.log(err);
+      });
   }
 
   return (

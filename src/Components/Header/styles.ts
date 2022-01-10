@@ -13,21 +13,21 @@ export const HeaderContent = styled.div`
   margin: auto;
   justify-content: space-between;
   width: 70%;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   img {
     max-width: 120px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     width: 90%;
   }
 `;
 
 export const LeftContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 20px;
   padding-top: 0.5rem;
 `;
@@ -55,8 +55,7 @@ export const NavBar = styled.div`
 export const ImgContainer = styled.div``;
 
 export const RightContainer = styled.div`
-  align-items: center;
-  vertical-align: bottom;
+
 `;
 
 export const WideMenu = styled.div`
@@ -72,6 +71,7 @@ export const WideMenu = styled.div`
 
 export const ShoppingCart = styled.div`
   display: flex;
+  
   div {
     position: relative;
     right: 10px;
@@ -88,7 +88,7 @@ export const ShoppingCart = styled.div`
 export const HamburguerMenu = styled.div`
   display: none;
   transition: all ease-in-out 300ms;
-  transform: ${(props) => `rotate(${props.OpenMenu ? "90deg" : "-180deg"})`};
+  transform: ${(props: any) => `rotate(${props.OpenMenu ? "90deg" : "-180deg"})`};
   margin-right: 10%;
   @media (max-width: 900px) {
     display: flex;
@@ -99,6 +99,8 @@ export const Register = styled.div`
   display: flex;
   max-width: 300px;
   gap: 10px;
+
+  ;
   img {
     max-width: 45px;
     height: 45px;

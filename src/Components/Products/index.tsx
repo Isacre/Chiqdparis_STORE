@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import { GetStoreProducts } from "../../services/chiqdparisAPI";
+import { fetchProducts } from "../../services/chiqAPI";
 import { Spin } from "antd";
-import ProdutoComponent from "./Produto";
+import Product from "./Product";
+import { useDispatch } from "react-redux";
+import { getProducts } from "../../store/products";
+import { useAppSelector } from "../../store/hooks";
 
 const Background = styled.div`
   width: 100%;
-  background-color: #fafafb;
+  background-color: #f2f3f4;
 `;
 const Component = styled.div`
   margin: auto;
@@ -32,17 +35,18 @@ const Content = styled.div`
   @media (max-width: 700px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 374px) {
+  @media (max-width: 390px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
 
 export default function Products() {
-  const [Products, setProducts] = useState([]);
+  const Products = useAppSelector((state) => state.store.Products);
+  const dispatch = useDispatch();
 
   function handleFetchItems() {
-    GetStoreProducts().then((res) => {
-      setProducts(res);
+    fetchProducts().then((res: any) => {
+      dispatch(getProducts(res));
     });
   }
 
@@ -53,7 +57,7 @@ export default function Products() {
   return (
     <Background>
       <Component>
-        {Products.length === 0 ? (
+        {Products.length === 1 ? (
           <Spin
             style={{
               position: "absolute",
@@ -65,12 +69,8 @@ export default function Products() {
           />
         ) : (
           <Content>
-            {Products.map((produto, index) => (
-              <ProdutoComponent
-                produto={produto}
-                index={index}
-                key={produto.id}
-              />
+            {Products.map((Products, index) => (
+              <Product Products={Products} index={index} key={Products._id} />
             ))}
           </Content>
         )}
