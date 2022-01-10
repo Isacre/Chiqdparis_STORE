@@ -5,7 +5,6 @@ import { MdShoppingCart } from "react-icons/md";
 import "antd/dist/antd.min.css";
 
 import { Link } from "react-router-dom";
-import products from "../../../store/products";
 
 const Container = styled.div`
   margin: auto;
