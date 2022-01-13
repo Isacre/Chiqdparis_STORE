@@ -66,6 +66,7 @@ export const BuyButton = styled.div`
 
   button {
     background-color: #002290d1;
+
     border: none;
     padding: 5px 15px;
     border-radius: 5px;
@@ -126,8 +127,8 @@ export default function ProdutoComponent(props: any) {
 
   return (
     <>
-      <Link to={`produto/${Products._id}/${urlName}`}>
-        <Container>
+      <Container>
+        <Link to={`/produto/${Products._id}/${urlName}`}>
           <ImageContainer>
             <ProductImage src={`${Products.image}`} />
           </ImageContainer>
@@ -139,20 +140,20 @@ export default function ProdutoComponent(props: any) {
 
           <ProductPrice>R${Products.price}</ProductPrice>
           <CustomP>À vista no PIX </CustomP>
-          <BuyButton>
-            <button>
-              <MdShoppingCart
-                size={20}
-                style={{
-                  textAlign: "center",
-                  verticalAlign: "sub",
-                }}
-              />
-              Comprar
-            </button>
-          </BuyButton>
-        </Container>
-      </Link>
+        </Link>
+        <BuyButton>
+          <button disabled={Products.quantity <= 0 ? true : false}>
+            <MdShoppingCart
+              size={20}
+              style={{
+                textAlign: "center",
+                verticalAlign: "sub",
+              }}
+            />
+            {Products.quantity > 0 ? "Comprar" : "Esgotado"}
+          </button>
+        </BuyButton>
+      </Container>
     </>
   );
 }

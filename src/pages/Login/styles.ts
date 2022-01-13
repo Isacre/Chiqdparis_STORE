@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-export const Component = styled.div`
-  background-color: #F2F3F4;
-`;
 export const Content = styled.div`
   margin: auto;
   max-width: 80vw;

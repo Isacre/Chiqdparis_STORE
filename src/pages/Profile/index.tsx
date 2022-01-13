@@ -2,9 +2,6 @@ import styled from "styled-components";
 import { MdInventory } from "react-icons/md";
 /* import { useAppSelector } from "../../store/hooks"; */
 const Component = styled.div`
-  background-color: #f2f3f4;
-  width: 100%;
-  height: 86vh;
   padding-top: 15px;
 `;
 

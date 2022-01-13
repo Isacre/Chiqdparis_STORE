@@ -8,9 +8,6 @@ import "antd/dist/antd.min.css";
 import { useAppSelector } from "../../store/hooks";
 
 const Component = styled.div`
-  background-color: #f2f3f4;
-  width: 100%;
-  height: 86vh;
   padding-top: 15px;
 `;
 // PRODUCT MAIN CONTAINER (PRICE, IMAGE)

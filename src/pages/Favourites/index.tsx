@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 const Component = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fafafb;
-  height: 100vh;
 `;
 
 const EmptyCart = styled.div`
@@ -34,7 +32,7 @@ const EmptyCart = styled.div`
 
 export default function FavouriteComponent() {
   const data = useAppSelector((state) => state.user.Userinfo.favourites);
-  console.log(data);
+
   return (
     <Component>
       {data.length === 0 ? (

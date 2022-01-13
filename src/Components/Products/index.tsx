@@ -7,10 +7,6 @@ import { useDispatch } from "react-redux";
 import { getProducts } from "../../store/products";
 import { useAppSelector } from "../../store/hooks";
 
-const Background = styled.div`
-  width: 100%;
-  background-color: #f2f3f4;
-`;
 const Component = styled.div`
   margin: auto;
   width: 75%;
@@ -41,7 +37,7 @@ const Content = styled.div`
 `;
 
 export default function Products() {
-  const Products = useAppSelector((state) => state.store.Products);
+  const Products = useAppSelector((state) => state.store.Products).slice(0, 8);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,26 +50,24 @@ export default function Products() {
   }, [dispatch]);
 
   return (
-    <Background>
-      <Component>
-        {Products.length === 1 ? (
-          <Spin
-            style={{
-              position: "absolute",
-              top: "50%",
-              bottom: "50%",
-              left: "0",
-              right: "0",
-            }}
-          />
-        ) : (
-          <Content>
-            {Products.map((Products, index) => (
-              <Product Products={Products} index={index} key={Products._id} />
-            ))}
-          </Content>
-        )}
-      </Component>
-    </Background>
+    <Component>
+      {Products.length === 1 ? (
+        <Spin
+          style={{
+            position: "absolute",
+            top: "50%",
+            bottom: "50%",
+            left: "0",
+            right: "0",
+          }}
+        />
+      ) : (
+        <Content>
+          {Products.map((Products, index) => (
+            <Product Products={Products} index={index} key={Products._id} />
+          ))}
+        </Content>
+      )}
+    </Component>
   );
 }

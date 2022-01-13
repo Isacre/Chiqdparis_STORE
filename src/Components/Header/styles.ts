@@ -38,13 +38,12 @@ export const NavBar = styled.div`
   font-weight: 700;
   cursor: pointer;
   gap: 20px;
-  transition: ease-in-out 200;
+  
 
   p {
     cursor: pointer;
-    :hover {
-      color: #ff66c4;
-    }
+    
+  
   }
 
   @media (max-width: 900px) {

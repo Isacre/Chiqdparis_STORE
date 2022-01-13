@@ -19,6 +19,7 @@ import {
 import { useDispatch } from "react-redux";
 import { Logout, SaveUser } from "../../store/user";
 import { useEffect } from "react";
+import MobileMenu from "./MobileMenu";
 
 const LoggedUserArea = styled.div`
   div {
@@ -41,16 +42,18 @@ export default function Header() {
   const userdata = useAppSelector((state) => state.user.Userinfo);
   const localData = localStorage.getItem("user");
   const local = JSON.parse(localData!);
-  console.log(userdata);
 
   useEffect(() => {
     dispatch(SaveUser(local));
     localStorage.setItem("user", JSON.stringify(userdata));
-  }, [dispatch, local, userdata]);
+    // eslint-disable-next-line
+  }, []);
+
   function handleLogout() {
     dispatch(Logout());
   }
 
+  useEffect(() => {}, []);
   return (
     <HeaderBackground>
       <HeaderContent>
@@ -61,17 +64,31 @@ export default function Header() {
             </Link>
           </ImgContainer>
           <NavBar>
-            <p>Home</p>
-            <p>Masculino</p>
-            <p>Feminino</p>
-            <p>Infantil</p>
+            <Link to="masculinos">
+              <p>Masculino</p>
+            </Link>
+            <Link to="femininos">
+              <p>Feminino</p>
+            </Link>
+            <Link to="joias">
+              <p>Joias</p>
+            </Link>
+            <Link to="tecnologia">
+              <p>Tecnologia</p>
+            </Link>
           </NavBar>
         </LeftContainer>
         <RightContainer>
           <HamburguerMenu>
             <MdMenu size={25} onClick={() => setSideMenuOpen(!SideMenuOpen)} />
           </HamburguerMenu>
-
+          {SideMenuOpen && (
+            <MobileMenu
+              setSideMenuOpen={setSideMenuOpen}
+              userdata={userdata}
+              handleLogout={handleLogout}
+            />
+          )}
           <WideMenu>
             <Register>
               <img

@@ -5,8 +5,6 @@ import { useAppSelector } from "../../store/hooks"; */
 const Component = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fafafb;
-  height: 100vh;
 `;
 
 /* const EmptyCart = styled.div`
