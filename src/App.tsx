@@ -2,7 +2,6 @@ import Header from "./Components/Header";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Products from "./Components/Products";
 import Login from "./pages/Login/";
 import ProductPage from "./pages/ProductPage";
 import Profile from "./pages/Profile";

@@ -56,6 +56,7 @@ export const InputsDiv = styled.div`
 
     input {
       width: 49%;
+      border: ${props => props.className === 'unfilled' ? '1px solid red' : '1px solid rgba(128, 128, 128, 0.5)'};
     }
   }
 `;

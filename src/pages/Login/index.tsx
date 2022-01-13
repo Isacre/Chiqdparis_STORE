@@ -69,7 +69,8 @@ export default function LoginAndRegister() {
           setRegisterloading(false);
         });
     } else {
-      window.alert("Por favor preencha todos os campos");
+      setWrongInfo(true);
+      setRegisterWarning("Por favor preencha todos os campos");
       setRegisterloading(false);
     }
   }
@@ -101,7 +102,7 @@ export default function LoginAndRegister() {
           console.log(err);
         });
     } else {
-      setWarning("Por favor preencha todos os campos");
+      setWarning("Por favor, preencha todos os campos");
       setLoading(false);
       setWrongCredentials(true);
     }
@@ -181,6 +182,7 @@ export default function LoginAndRegister() {
             <input
               placeholder="Nome *"
               value={FirstName}
+              className={WrongInfo && FirstName === "" ? "unfilled" : "filled"}
               onChange={(event) => setFirstName(event.target.value)}
             />
             <input
