@@ -64,16 +64,16 @@ export default function Header() {
             </Link>
           </ImgContainer>
           <NavBar>
-            <Link to="masculinos">
+            <Link to="/produtos/category=men">
               <p>Masculino</p>
             </Link>
-            <Link to="femininos">
+            <Link to="/produtos/category=women">
               <p>Feminino</p>
             </Link>
-            <Link to="joias">
+            <Link to="/produtos/category=jewelry">
               <p>Joias</p>
             </Link>
-            <Link to="tecnologia">
+            <Link to="/produtos/category=electronics">
               <p>Tecnologia</p>
             </Link>
           </NavBar>

@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { fetchElectronics } from "../../services/chiqAPI";
+import { fetchQuery } from "../../services/chiqAPI";
 import { Spin } from "antd";
 import Product from "./Product";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../store/products";
 import { useAppSelector } from "../../store/hooks";
+import { useParams } from "react-router";
+import { ProductsType } from "../../store/products";
 
 const Component = styled.div`
   margin: auto;
@@ -36,18 +38,54 @@ const Content = styled.div`
   }
 `;
 
-export default function Products() {
-  const Products = useAppSelector((state) => state.store.Products);
+const LoadMoreButton = styled.div`
+  width: 30%;
+  margin-bottom: 10px;
+  margin: auto;
+
+  button {
+    margin: auto;
+    width: 100%;
+    margin-bottom: 30px;
+    color: white;
+    background-color: #4b5776;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+  }
+`;
+
+interface FetchResponse {
+  title?: String;
+  price?: String;
+  image?: String;
+  rating?: {
+    rate?: Number;
+    count?: Number;
+  };
+  description?: String;
+  categories?: Array<String>;
+  quantity?: Number;
+  _id?: String;
+}
+
+export default function Testing() {
+  const [LoadProducts, setLoadProducts] = useState(8);
+  const Products = useAppSelector((state) => state.store.Products).slice(
+    0,
+    LoadProducts
+  );
   const dispatch = useDispatch();
+  const { category } = useParams();
 
   useEffect(() => {
     function handleFetchItems() {
-      fetchElectronics().then((res: any) => {
+      fetchQuery(category!).then((res: FetchResponse) => {
         dispatch(getProducts(res));
       });
     }
     handleFetchItems();
-  }, [dispatch]);
+  }, [dispatch, category]);
 
   return (
     <Component>
@@ -67,6 +105,11 @@ export default function Products() {
             <Product Products={Products} index={index} key={Products._id} />
           ))}
         </Content>
+      )}
+      {LoadProducts <= Products.length && (
+        <LoadMoreButton onMouseEnter={() => setLoadProducts(LoadProducts + 8)}>
+          <button>Carregar mais produtos</button>
+        </LoadMoreButton>
       )}
     </Component>
   );

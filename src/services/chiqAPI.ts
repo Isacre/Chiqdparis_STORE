@@ -6,7 +6,11 @@ const config = {
   headers: {token: `${accessToken}`}
 }
 
+export async function fetchQuery(query: String) {
+  const products = await axios.get(`${url}products?${query}`)
 
+  return products.data
+}
 
 export async function fetchProducts() {
     const products = await axios.get(`${url}products`);

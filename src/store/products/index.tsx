@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface ProductsType {
+export interface ProductsType {
   Products: [
     {
       title?: String;

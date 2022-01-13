@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchProducts } from "../../services/chiqAPI";
 import { Spin } from "antd";
@@ -6,6 +6,7 @@ import Product from "./Product";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../store/products";
 import { useAppSelector } from "../../store/hooks";
+import { useParams } from "react-router";
 
 const Component = styled.div`
   margin: auto;
@@ -36,9 +37,32 @@ const Content = styled.div`
   }
 `;
 
+const LoadMoreButton = styled.div`
+  width: 30%;
+  margin-bottom: 10px;
+  margin: auto;
+
+  button {
+    margin: auto;
+    width: 100%;
+    margin-bottom: 30px;
+    color: white;
+    background-color: #4b5776;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+  }
+`;
+
 export default function Products() {
-  const Products = useAppSelector((state) => state.store.Products).slice(0, 8);
+  const [LoadProducts, setLoadProducts] = useState(8);
+  const Products = useAppSelector((state) => state.store.Products).slice(
+    0,
+    LoadProducts
+  );
   const dispatch = useDispatch();
+  const { query } = useParams();
+  console.log(query);
 
   useEffect(() => {
     function handleFetchItems() {
@@ -67,6 +91,11 @@ export default function Products() {
             <Product Products={Products} index={index} key={Products._id} />
           ))}
         </Content>
+      )}
+      {LoadProducts <= Products.length && (
+        <LoadMoreButton onMouseEnter={() => setLoadProducts(LoadProducts + 8)}>
+          <button>Carregar mais produtos</button>
+        </LoadMoreButton>
       )}
     </Component>
   );
