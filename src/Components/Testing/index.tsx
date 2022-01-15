@@ -4,10 +4,9 @@ import { fetchQuery } from "../../services/chiqAPI";
 import { Spin } from "antd";
 import Product from "./Product";
 import { useDispatch } from "react-redux";
-import { getProducts } from "../../store/products";
+import { getProducts, refreshProducts } from "../../store/products";
 import { useAppSelector } from "../../store/hooks";
 import { useParams } from "react-router";
-import { ProductsType } from "../../store/products";
 
 const Component = styled.div`
   margin: auto;
@@ -80,6 +79,7 @@ export default function Testing() {
 
   useEffect(() => {
     function handleFetchItems() {
+      dispatch(refreshProducts);
       fetchQuery(category!).then((res: FetchResponse) => {
         dispatch(getProducts(res));
       });

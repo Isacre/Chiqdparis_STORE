@@ -18,29 +18,6 @@ export async function fetchProducts() {
     return products.data;
   }
 
-  export async function fetchMale() {
-    const products = await axios.get(`${url}products?category=men`);
-
-    return products.data;
-  }
-  export async function fetchFemale() {
-    const products = await axios.get(`${url}products?category=women`);
-
-    return products.data;
-  }
-  export async function fetchElectronics() {
-    const products = await axios.get(`${url}products?category=electronics`);
-
-    return products.data;
-  }
-
-  export async function fetchJewelry() {
-    const products = await axios.get(`${url}products?category=jewelry`);
-
-    return products.data;
-  }
-
-
 
   
 export async function fetchSingleProduct(productid: String) {

@@ -13,6 +13,7 @@ interface UserTypes {
     createdAt?: Date;
     updatedAt?: Date;
     acessToken?: String;
+    cart: Array<String>;
   };
 }
 
@@ -29,6 +30,7 @@ const initialState: UserTypes = {
     createdAt: undefined,
     updatedAt: undefined,
     acessToken: undefined,
+    cart: [],
   },
 };
 
@@ -45,8 +47,13 @@ const UserReducer = createSlice({
     AddFavorite(state, action) {
       state.Userinfo.favourites.push(action.payload);
     },
+    AddtoCart(state, action) {
+      const { payload } = action;
+      const { id, img, name, price } = payload;
+      state.Userinfo.cart.push(id, img, name, price);
+    },
   },
 });
 
-export const { SaveUser, Logout, AddFavorite } = UserReducer.actions;
+export const { SaveUser, Logout, AddFavorite, AddtoCart } = UserReducer.actions;
 export default UserReducer.reducer;

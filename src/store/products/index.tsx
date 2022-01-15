@@ -42,8 +42,11 @@ const ProductsReducer = createSlice({
     getProducts(state, action) {
       state.Products = action.payload;
     },
+    refreshProducts(state, action) {
+      state.Products = initialState.Products;
+    },
   },
 });
 
-export const { getProducts } = ProductsReducer.actions;
+export const { getProducts, refreshProducts } = ProductsReducer.actions;
 export default ProductsReducer.reducer;

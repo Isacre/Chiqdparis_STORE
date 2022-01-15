@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { Rate } from "antd";
 import { MdShoppingCart } from "react-icons/md";
-
 import "antd/dist/antd.min.css";
-
 import { Link } from "react-router-dom";
+import { AddtoCart } from "../../../store/user";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div`
   margin: auto;
@@ -115,6 +115,7 @@ export interface ProductsType {
 }
 
 export default function ProdutoComponent(props: any) {
+  const dispatch = useDispatch();
   const Products: ProductsType = props.Products;
   const ProductNames = Products.title;
   const urlName = ProductNames.toLowerCase().replace(/\s+/g, "-");
@@ -123,6 +124,17 @@ export default function ProdutoComponent(props: any) {
     const newtitle = filtereddata + "...";
     if (data.length > 30) return newtitle;
     if (data.length < 30) return filtereddata;
+  }
+
+  function handleAddingtoCart() {
+    dispatch(
+      AddtoCart({
+        id: Products._id,
+        img: Products.image,
+        name: Products.title,
+        price: Products.price,
+      })
+    );
   }
 
   return (
@@ -141,7 +153,7 @@ export default function ProdutoComponent(props: any) {
           <ProductPrice>R${Products.price}</ProductPrice>
           <CustomP>À vista no PIX </CustomP>
         </Link>
-        <BuyButton>
+        <BuyButton onClick={handleAddingtoCart}>
           <button disabled={Products.quantity <= 0 ? true : false}>
             <MdShoppingCart
               size={20}

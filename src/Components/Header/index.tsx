@@ -40,6 +40,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const [SideMenuOpen, setSideMenuOpen] = useState(false);
   const userdata = useAppSelector((state) => state.user.Userinfo);
+  console.log(userdata);
   const localData = localStorage.getItem("user");
   const local = JSON.parse(localData!);
 
