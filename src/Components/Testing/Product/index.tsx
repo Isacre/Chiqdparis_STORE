@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { Rate } from "antd";
-import { MdShoppingCart } from "react-icons/md";
+import { MdFavorite, MdFavoriteBorder, MdShoppingCart } from "react-icons/md";
 import "antd/dist/antd.min.css";
 import { Link } from "react-router-dom";
-import { AddtoCart } from "../../../store/user";
+import { AddFavorite, AddtoCart } from "../../../store/user";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../store/hooks";
+
+import { getUserData, setFavorites } from "../../../services/chiqAPI";
 
 const Container = styled.div`
   margin: auto;
@@ -100,6 +103,10 @@ const CustomP = styled.p`
   color: rgba(0, 0, 0, 0.7);
 `;
 
+const FavoriteButton = styled.div`
+  position: absolute;
+`;
+
 export interface ProductsType {
   title: String;
   price: String;
@@ -116,8 +123,10 @@ export interface ProductsType {
 
 export default function ProdutoComponent(props: any) {
   const dispatch = useDispatch();
+  const userdata = useAppSelector((state) => state.user.Userinfo);
   const Products: ProductsType = props.Products;
   const ProductNames = Products.title;
+
   const urlName = ProductNames.toLowerCase().replace(/\s+/g, "-");
   function FilterTitles(data: String) {
     const filtereddata = data.slice(0, 30);
@@ -137,9 +146,43 @@ export default function ProdutoComponent(props: any) {
     );
   }
 
+  function handleFavorite() {
+    const itemPicked = {
+      id: Products._id,
+      name: Products.title,
+      price: Products.price,
+    };
+    if (userdata._id === undefined) return;
+    else {
+      getUserData(userdata._id).then((res: any) => {
+        const newFavorites = [...res.favourites, itemPicked];
+        const findProduct = res.favourites.findIndex(
+          (item: any) => item.name === Products.title
+        );
+        if (findProduct === -1) {
+          dispatch(AddFavorite(newFavorites));
+          setFavorites(userdata._id!, newFavorites);
+        }
+        if (findProduct > -1) {
+          res.favourites.splice(findProduct, 1);
+          dispatch(AddFavorite(res.favourites));
+          setFavorites(userdata._id!, res.favourites);
+        }
+      });
+    }
+  }
+
   return (
     <>
       <Container>
+        <Link to={userdata.email === undefined ? "/login" : ""}>
+          <FavoriteButton>
+            <button onClick={handleFavorite}>
+              <MdFavoriteBorder />
+              <MdFavorite />
+            </button>
+          </FavoriteButton>
+        </Link>
         <Link to={`/produto/${Products._id}/${urlName}`}>
           <ImageContainer>
             <ProductImage src={`${Products.image}`} />

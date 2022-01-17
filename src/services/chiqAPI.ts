@@ -12,6 +12,12 @@ export async function fetchQuery(query: String) {
   return products.data
 }
 
+export async function getUserData(id: String) {
+  const user = await axios.get(`${url}users/${id}`, config)
+
+  return user.data
+}
+
 export async function fetchProducts() {
     const products = await axios.get(`${url}products`);
 

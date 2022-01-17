@@ -61,8 +61,6 @@ export default function Products() {
     LoadProducts
   );
   const dispatch = useDispatch();
-  const { query } = useParams();
-  console.log(query);
 
   useEffect(() => {
     function handleFetchItems() {

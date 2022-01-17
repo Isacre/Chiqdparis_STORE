@@ -9,11 +9,11 @@ interface UserTypes {
     email?: String;
     password?: String;
     cpf?: String;
-    favourites: Array<String>;
+    favourites: Array<Object>;
     createdAt?: Date;
     updatedAt?: Date;
     acessToken?: String;
-    cart: Array<String>;
+    cart: Array<Object>;
   };
 }
 
@@ -45,15 +45,26 @@ const UserReducer = createSlice({
       state.Userinfo = initialState.Userinfo;
     },
     AddFavorite(state, action) {
-      state.Userinfo.favourites.push(action.payload);
+      state.Userinfo.favourites = action.payload;
     },
     AddtoCart(state, action) {
       const { payload } = action;
       const { id, img, name, price } = payload;
-      state.Userinfo.cart.push(id, img, name, price);
+      const Item = {
+        id: id,
+        img: img,
+        title: name,
+        price: price,
+      };
+      state.Userinfo.cart.push(Item);
+    },
+    RemoveFromFavorites(state, action) {
+      const FavoriteList = state.Userinfo.favourites.indexOf(action.payload);
+      state.Userinfo.favourites.splice(FavoriteList, 1);
     },
   },
 });
 
-export const { SaveUser, Logout, AddFavorite, AddtoCart } = UserReducer.actions;
+export const { SaveUser, Logout, AddFavorite, AddtoCart, RemoveFromFavorites } =
+  UserReducer.actions;
 export default UserReducer.reducer;
